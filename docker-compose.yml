@@ -10,10 +10,12 @@ services:
       RABBITMQ_DEFAULT_VHOST: "/"
       RABBITMQ_HEARTBEAT: 30
     ports:
-      - "15671-15672"
-      - "5671-5672"
+      - "15671-15672:15671-15672"
+      - "5671-5672:5671-5672"
     volumes:
       - data:/var/lib/rabbitmq
+    networks:
+      - backend
     deploy:
       mode: replicated
       replicas: 1
@@ -24,3 +26,7 @@ services:
 volumes:
   data:
     driver: local
+
+networks:
+  backend:
+    external: true
