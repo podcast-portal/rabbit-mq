@@ -1,0 +1,26 @@
+version: '3.7'
+
+services:
+  mq:
+    image: "rabbitmq:3-management"
+    environment:
+      RABBITMQ_ERLANG_COOKIE: "SWQOKODSSSQALRPCLNMEQG"
+      RABBITMQ_DEFAULT_USER: "mq-admin"
+      RABBITMQ_DEFAULT_PASS: "3krR7oHU8PUo46wpxiZPZ7tExdJgjp"
+      RABBITMQ_DEFAULT_VHOST: "/"
+      RABBITMQ_HEARTBEAT: 30
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+    volumes:
+      - data:/var/lib/rabbitmq
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.labels.rabbit == master
+
+volumes:
+  data:
+    driver: local

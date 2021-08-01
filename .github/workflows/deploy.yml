@@ -1,0 +1,33 @@
+name: CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: update
+        uses: cross-the-world/ssh-scp-ssh-pipelines@latest
+        with:
+          host: master01.vps.webdock.io
+          user: deployer
+          key: ${{ secrets.DEPLOY_PRIVATE_KEY }}
+
+          first_ssh: |
+            mkdir -p /home/deployer/rabbitmq
+          scp: |
+            './*' => /home/deployer/rabbitmq/
+          last_ssh: |
+            export RABBITMQ_ERLANG_COOKIE=${{ secrets.RABBITMQ_ERLANG_COOKIE }}
+            export RABBITMQ_DEFAULT_USER=${{ secrets.RABBITMQ_DEFAULT_USER }}
+            export RABBITMQ_DEFAULT_PASS=${{ secrets.RABBITMQ_DEFAULT_PASS }}
+            docker stack deploy --compose-file /home/deployer/rabbitmq/docker-compose.yml rabbit
+            rm -rf /home/deployer/rabbitmq
+
