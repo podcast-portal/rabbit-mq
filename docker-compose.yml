@@ -2,11 +2,11 @@ version: '3.7'
 
 services:
   mq:
-    image: "rabbitmq:3-management"
+    image: "rabbitmq:3.8-management"
     environment:
-      RABBITMQ_ERLANG_COOKIE: "SWQOKODSSSQALRPCLNMEQG"
-      RABBITMQ_DEFAULT_USER: "mq-admin"
-      RABBITMQ_DEFAULT_PASS: "3krR7oHU8PUo46wpxiZPZ7tExdJgjp"
+      RABBITMQ_ERLANG_COOKIE: ${RABBITMQ_ERLANG_COOKIE}
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS}
       RABBITMQ_DEFAULT_VHOST: "/"
       RABBITMQ_HEARTBEAT: 30
     ports:
