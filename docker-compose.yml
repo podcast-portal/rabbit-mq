@@ -26,6 +26,10 @@ services:
       placement:
         constraints:
           - node.labels.rabbit == master
+      resources:
+        limits:
+          cpus: '4'
+          memory: 3G
 
 volumes:
   data:
